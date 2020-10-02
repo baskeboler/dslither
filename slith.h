@@ -1,6 +1,7 @@
 #ifndef SLITH_H
 #define SLITH_H
 #include <list>
+#include <ostream>
 
 #include "./point_indexer.h"
 
@@ -17,7 +18,6 @@ class slith : public std::enable_shared_from_this<slith> {
   point_t head_position;
   int nextidx;
   Direction currentDirection = Right;
-
   typedef std::pair<int, int> int_pair;
   static constexpr int_pair LEFT = {-1, 0};
   static constexpr int_pair RIGHT = {1, 0};

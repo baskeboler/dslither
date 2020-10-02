@@ -1,10 +1,15 @@
 #include <catch2/catch.hpp>
 
-#include <iostream>
-#include <tuple>
-
+#include <algorithm>
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/io/io.hpp>
+#include <iostream>
+#include <iterator>
+#include <map>
+#include <set>
+#include <string>
+#include <tuple>
+#include <vector>
 
 #include <boost/tuple/tuple.hpp>
 
@@ -12,10 +17,10 @@
 #include "../slith.h"
 #include "../slith_node.h"
 
+using namespace slither;
 TEST_CASE("1 + 1 = 2", "[placeholder]") { REQUIRE(2 == 1 + 1); }
 
 TEST_CASE("create slith node", "[slith]") {
-  using namespace slither;
   slith_node n{{1, 3}}, m{{1, 3}};
 
   REQUIRE(n.position().get<0>() == m.position().get<0>());
@@ -84,5 +89,49 @@ TEST_CASE("use point indexe", "[points]") {
     for (const auto &v : res) {
       std::cout << v.first << " returned" << std::endl;
     }
+  }
+}
+
+TEST_CASE("primitive tests", "c++") {
+
+  std::pair<int, int> p1{2, 3}, p2{3, 2}, p3{3, 3}, p4{2, 3};
+  REQUIRE(p1 != p2);
+  REQUIRE(p1 != p3);
+  REQUIRE(p1 == p4);
+  REQUIRE(p4 == p1);
+  REQUIRE(p2 != p1);
+}
+
+TEST_CASE("pair maps tests", "c++") {
+
+  typedef std::map<std::pair<int, int>, std::string> stringposmap;
+  std::pair<int, int> p1{2, 3}, p2{3, 2}, p3{3, 3}, p4{2, 3};
+  stringposmap themap;
+
+  themap[p1] = "hello";
+  themap[p2] = "world";
+
+  SECTION("predicates") {
+
+    REQUIRE(themap[p1] == "hello");
+    REQUIRE(themap.contains(p1));
+    REQUIRE(themap.contains(p2));
+    REQUIRE(themap.contains(p4));
+    REQUIRE(themap[p1] != themap[p2]);
+    REQUIRE(!themap.contains(p3));
+  }
+
+  SECTION("the keys") {
+    REQUIRE(themap.size() == 2);
+    std::vector<std::pair<int, int>> keys;
+
+    std::transform(themap.begin(), themap.end(),
+                   std::back_insert_iterator(keys),
+                   [](const std::pair<std::pair<int, int>, std::string> &p) {
+                     return p.first;
+                   });
+
+    std::set<std::pair<int, int>> s{keys.begin(), keys.end()};
+    REQUIRE(s == std::set<std::pair<int, int>>{p1, p2});
   }
 }

@@ -13,7 +13,8 @@
 //}
 
 std::ostream &operator<<(std::ostream &os, const point_t &p) {
-  return os << "(" << p.get<0>() << ", " << p.get<1>() << ")";
+  return os << geo::svg(p, "");
+  //          << "(" << p.get<0>() << ", " << p.get<1>() << ")";
 }
 
 // std::ostream &operator<<(std::ostream &os, const multipoint_t &p) {

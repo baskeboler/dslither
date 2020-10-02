@@ -1,24 +1,42 @@
 #ifndef POWERUP_H
 #define POWERUP_H
+#include <concepts>
 #include <iostream>
 #include <ostream>
 #include <string>
+#include <utility>
 
 #include "./point_indexer.h"
 
-template <typename w, typename c> class powerup;
-template <typename w, typename c>
+namespace slither {
+using std::integral;
+
+template <integral w, typename c> class powerup;
+template <integral w, typename c>
 std::ostream &operator<<(std::ostream &os, const powerup<w, c> &p);
 
-template <typename WeightType, typename ColorType> class powerup {
+template <integral WeightType, typename ColorType> class powerup {
   WeightType weight;
   ColorType color;
   geo_point_index_value_t position;
 
 public:
-  explicit powerup() = default;
+  powerup() = default;
   powerup(const powerup<WeightType, ColorType> &other) = default;
-  //  powerup(powerup<WeightType, ColorType> &&other) = default;
+  powerup(powerup<WeightType, ColorType> &&other) = default;
+  powerup &operator=(powerup &&other) {
+    weight = std::move(other.weight);
+    color = std::move(other.color);
+    position = std::move(other.position);
+    return *this;
+  }
+  powerup &operator=(const powerup &other) {
+    weight = other.weight;
+    color = other.color;
+    position = other.position;
+    return *this;
+  }
+
   WeightType getWeight() const { return weight; }
   void setWeight(const WeightType &value) { weight = value; }
   ColorType getColor() const { return color; }
@@ -30,11 +48,12 @@ public:
                                     const powerup<WeightType, ColorType> &p);
 };
 
-template <typename w, typename c>
+template <integral w, typename c>
 std::ostream &operator<<(std::ostream &os, const powerup<w, c> &p) {
   return os << "powerup{w=" << std::to_string(p.getWeight())
             << ", c=" << std::to_string(p.getColor())
-            << ", pos=" << p.getPosition() << "}";
+            << ", pos=" << geo::wkt(p.getPosition()) << "}";
 }
+} // namespace slither
 
 #endif // POWERUP_H

@@ -5,7 +5,7 @@
 
 #include "./point_indexer.h"
 #include "./powerup.h"
-
+namespace slither {
 using std::vector;
 
 typedef uint64_t weight_t;
@@ -24,8 +24,10 @@ public:
   vector<powerup_t> all();
   powerup_t byidx(int idx) const;
   int random_powerup();
-};
 
+  vector<powerup_t> find(const point_t &p);
+};
+} // namespace slither
 // template <> std::ostream &operator<<(std::ostream &os, const powerup_t &p) {
 //  return os << p;
 //}

@@ -6,12 +6,11 @@
 #include <boost/geometry.hpp>
 #include <boost/geometry/geometries/point_xy.hpp>
 
+namespace slither {
 using std::vector;
 
 namespace geo = boost::geometry;
 namespace geoi = geo::index;
-
-namespace slither {
 
 typedef geo::model::point<int, 2, geo::cs::cartesian> point_t;
 typedef geo::model::box<point_t> box_t;

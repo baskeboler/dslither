@@ -2,6 +2,7 @@
 #include <utility>
 #include <vector>
 
+namespace slither {
 using std::vector;
 
 int powerup_manager::boundedrand(int bound) const {
@@ -32,3 +33,19 @@ int powerup_manager::random_powerup() {
   powerup_map[idxPosition.second] = p;
   return idxPosition.second;
 }
+
+vector<powerup_t> powerup_manager::find(const point_t &p) {
+  int x = p.get<0>();
+  int y = p.get<1>();
+  box_t box{{x - 5, y - 5}, {x + 5, y + 5}};
+  auto vals = index.intersects(box);
+  vector<powerup_t> res;
+  for (auto &v : vals) {
+    res.push_back(powerup_map.at(v.second));
+    index.remove(v);
+    powerup_map.erase(v.second);
+  }
+
+  return res;
+}
+} // namespace slither
