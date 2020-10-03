@@ -9,16 +9,17 @@
 #include <set>
 #include <string>
 #include <tuple>
+#include <utility>
 #include <vector>
 
 #include <boost/tuple/tuple.hpp>
 
+#include "../player.h"
 #include "../point_indexer.h"
 #include "../slith.h"
 #include "../slith_node.h"
 
 using namespace slither;
-TEST_CASE("1 + 1 = 2", "[placeholder]") { REQUIRE(2 == 1 + 1); }
 
 TEST_CASE("create slith node", "[slith]") {
   slith_node n{{1, 3}}, m{{1, 3}};
@@ -64,7 +65,7 @@ TEST_CASE("use point indexe", "[points]") {
   //  idx.add({5, 5});
   //  idx.add({-2, -2});
   //  std::cout << a.first. << ", " << a.second << std::endl;
-  for (int i = -100; i <= 100; ++i) {
+  for (int i = -100; i <= 10; ++i) {
     idx.add({i, i});
   }
   SECTION("intersect just one") {
@@ -134,4 +135,12 @@ TEST_CASE("pair maps tests", "c++") {
     std::set<std::pair<int, int>> s{keys.begin(), keys.end()};
     REQUIRE(s == std::set<std::pair<int, int>>{p1, p2});
   }
+}
+
+TEST_CASE("players", "players") {
+  slither::player p;
+  p.setName("victor");
+  p.setSlith(std::make_shared<slither::slith>());
+
+  std::cout << "player: " << p << std::endl;
 }

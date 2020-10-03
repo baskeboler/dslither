@@ -3,13 +3,16 @@
 #include <map>
 #include <vector>
 
+#include "./color.h"
 #include "./point_indexer.h"
 #include "./powerup.h"
+
 namespace slither {
 using std::vector;
 
 typedef uint64_t weight_t;
-typedef uint32_t color_t;
+typedef color_rgba color_t;
+
 typedef powerup<weight_t, color_t> powerup_t;
 
 class powerup_manager {
@@ -28,8 +31,5 @@ public:
   vector<powerup_t> find(const point_t &p);
 };
 } // namespace slither
-// template <> std::ostream &operator<<(std::ostream &os, const powerup_t &p) {
-//  return os << p;
-//}
 
 #endif // POWERUP_MANAGER_H

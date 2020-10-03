@@ -18,7 +18,7 @@ using namespace slither;
 TEST_CASE("create powerups", "[powerups]") {
   powerup_manager mgr;
 
-  for (int i = 0; i < 200; i++) {
+  for (int i = 0; i < 20; i++) {
     mgr.random_powerup();
   }
 
@@ -27,7 +27,7 @@ TEST_CASE("create powerups", "[powerups]") {
     std::cout << "powerup: " << p.getPosition().first << std::endl;
   }
 
-  REQUIRE(ps.size() == 200);
+  REQUIRE(ps.size() == 20);
 
   SECTION("write svg") {
     std::ofstream svg("my_map.svg");

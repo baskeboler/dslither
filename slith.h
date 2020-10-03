@@ -7,12 +7,18 @@
 
 namespace slither {
 
-class slith : public std::enable_shared_from_this<slith> {
+class slith_spec {
+public:
+  virtual ~slith_spec() = default;
+  virtual std::list<point_t> points() const = 0;
+};
+
+class slith : public std::enable_shared_from_this<slith>, public slith_spec {
   enum Direction { Left, Right, Up, Down };
   std::list<geo_segment_index_value_t> segments;
 
   //  multipoint_t points;
-  linestring_t points;
+  linestring_t _points;
   segment_indexer segment_idx;
   //  linestring_indexer linestring_idx;
   point_t head_position;
@@ -54,7 +60,21 @@ public:
 
   //  bool collides(slith &other) { segment_idx }
   //  void normalize() { segment_idx. }
+
+  friend std::ostream &operator<<(std::ostream &, const slith &);
+
+  // slith_spec interface
+  virtual std::list<point_t> points() const override {
+    std::list<point_t> res;
+    res.push_back(head_position);
+    for (const auto &s : segments) {
+      res.push_back(s.first.second);
+    }
+    return res;
+  }
 };
+
+std::ostream &operator<<(std::ostream &, const slith &);
 } // namespace slither
 
 #endif // SLITH_H

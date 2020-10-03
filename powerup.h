@@ -9,9 +9,11 @@
 #include "./point_indexer.h"
 
 namespace slither {
+
 using std::integral;
 
 template <integral w, typename c> class powerup;
+
 template <integral w, typename c>
 std::ostream &operator<<(std::ostream &os, const powerup<w, c> &p);
 
