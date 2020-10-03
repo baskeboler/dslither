@@ -8,6 +8,15 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Boost COMPONENTS system program_options thread fiber log REQUIRED)
 find_package(Threads REQUIRED)
 
+Include(FetchContent)
+
+FetchContent_Declare(
+  Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v2.13.1)
+
+FetchContent_MakeAvailable(Catch2)
+
 find_package(Catch2 REQUIRED)
 INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
 set(dslither_SRC slith.cpp slith_node.cpp point_indexer.cpp powerup.cpp powerup_manager.cpp
@@ -35,5 +44,5 @@ add_executable(dslither_tests tests/tests.cpp ${dslither_test_SRC} ${dslither_HE
 target_link_libraries(dslither_tests Catch2::Catch2 ${Boost_LIBRARIES} dslith Threads::Threads)
 
 include(CTest)
-include(ParseAndAddCatchTests)
-ParseAndAddCatchTests(dslither_tests) 
+#include(Catch2/ParseAndAddCatchTests)
+#ParseAndAddCatchTests(dslither_tests) 
