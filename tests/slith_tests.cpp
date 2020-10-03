@@ -103,6 +103,10 @@ TEST_CASE("primitive tests", "c++") {
   REQUIRE(p2 != p1);
 }
 
+template <typename KT, typename VT> bool contains(std::map<KT, VT> m, KT key) {
+  return m.find(key) != m.end();
+}
+
 TEST_CASE("pair maps tests", "c++") {
 
   typedef std::map<std::pair<int, int>, std::string> stringposmap;
@@ -115,11 +119,11 @@ TEST_CASE("pair maps tests", "c++") {
   SECTION("predicates") {
 
     REQUIRE(themap[p1] == "hello");
-    REQUIRE(themap.contains(p1));
-    REQUIRE(themap.contains(p2));
-    REQUIRE(themap.contains(p4));
+    REQUIRE(contains(themap, p1));
+    REQUIRE(contains(themap, p2));
+    REQUIRE(contains(themap, p4));
     REQUIRE(themap[p1] != themap[p2]);
-    REQUIRE(!themap.contains(p3));
+    REQUIRE(!contains(themap, p3));
   }
 
   SECTION("the keys") {

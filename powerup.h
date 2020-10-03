@@ -10,14 +10,14 @@
 
 namespace slither {
 
-using std::integral;
+// using std::integral;
 
-template <integral w, typename c> class powerup;
+template <typename w, typename c> class powerup;
 
-template <integral w, typename c>
+template <typename w, typename c>
 std::ostream &operator<<(std::ostream &os, const powerup<w, c> &p);
 
-template <integral WeightType, typename ColorType> class powerup {
+template <typename WeightType, typename ColorType> class powerup {
   WeightType weight;
   ColorType color;
   geo_point_index_value_t position;
@@ -50,7 +50,7 @@ public:
                                     const powerup<WeightType, ColorType> &p);
 };
 
-template <integral w, typename c>
+template <typename w, typename c>
 std::ostream &operator<<(std::ostream &os, const powerup<w, c> &p) {
   return os << "powerup{w=" << std::to_string(p.getWeight())
             << ", c=" << std::to_string(p.getColor())
