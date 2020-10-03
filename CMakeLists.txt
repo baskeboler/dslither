@@ -17,8 +17,14 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(Catch2)
 
-find_package(Catch2 REQUIRED)
-INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
+#FetchContent_Populate(Catch2)
+
+#include(${Catch2_SOURCE_DIR})
+include(${Catch2_SOURCE_DIR}/contrib/Catch.cmake)
+include(${Catch2_SOURCE_DIR}/contrib/ParseAndAddCatchTests.cmake)
+
+#find_package(Catch2 REQUIRED)
+#INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
 set(dslither_SRC slith.cpp slith_node.cpp point_indexer.cpp powerup.cpp powerup_manager.cpp
     gamestate.cpp player.cpp color.cpp)
 set(dslither_HEADERS slith.h slith_node.h point_indexer.h powerup.h powerup_manager.h
@@ -44,5 +50,4 @@ add_executable(dslither_tests tests/tests.cpp ${dslither_test_SRC} ${dslither_HE
 target_link_libraries(dslither_tests Catch2::Catch2 ${Boost_LIBRARIES} dslith Threads::Threads)
 
 include(CTest)
-#include(Catch2/ParseAndAddCatchTests)
-#ParseAndAddCatchTests(dslither_tests) 
+ParseAndAddCatchTests(dslither_tests) 
