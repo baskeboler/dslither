@@ -10,7 +10,8 @@ public:
   color_rgba() = default;
   color_rgba(const color_rgba &other) : value{other.value} {};
   color_rgba(color_rgba &&other) noexcept : value{std::move(other.value)} {}
-  color_rgba(const uint32_t &v);
+  explicit color_rgba(const uint32_t &v);
+  ~color_rgba() = default;
   uint8_t r() const;
   uint8_t g() const;
   uint8_t b() const;
@@ -24,7 +25,7 @@ public:
   color_rgba &operator+(const uint32_t &other);
 
   color_rgba &operator=(const color_rgba &other);
-
+  color_rgba &operator=(color_rgba &&other) noexcept;
   bool operator==(const color_rgba &other) const;
   bool operator==(const uint32_t &v) const;
 

@@ -18,8 +18,6 @@ typedef geo::model::segment<point_t> segment_t;
 typedef std::pair<box_t, int> geo_box_index_value_t;
 typedef std::pair<point_t, int> geo_point_index_value_t;
 
-// geoi::rtree<geo_index_value_t, geoi::quadratic<16>> s_rtree;
-
 class slith_node {
   point_t position_;
 

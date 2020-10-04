@@ -58,9 +58,6 @@ public:
   void tick();
   int length() const;
 
-  //  bool collides(slith &other) { segment_idx }
-  //  void normalize() { segment_idx. }
-
   friend std::ostream &operator<<(std::ostream &, const slith &);
 
   // slith_spec interface

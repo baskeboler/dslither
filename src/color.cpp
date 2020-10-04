@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <ostream>
 #include <random>
 #include <sstream>
@@ -60,6 +61,12 @@ color_rgba &color_rgba::operator+(const uint32_t &other) {
 
 color_rgba &color_rgba::operator=(const color_rgba &other) {
   value = other.value;
+  return *this;
+}
+
+color_rgba &color_rgba::operator=(color_rgba &&other) noexcept {
+  color_rgba tmp{std::move(other)};
+  std::swap(value, tmp.value);
   return *this;
 }
 

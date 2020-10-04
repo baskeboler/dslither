@@ -1,6 +1,6 @@
 #include <catch2/catch.hpp>
 
-#include "../color.h"
+#include "color.h"
 
 TEST_CASE("create color", "colors") {
 

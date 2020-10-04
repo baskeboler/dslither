@@ -4,10 +4,6 @@
 
 namespace slither {
 
-// multipoint_t slith::getPoints() const { return _points; }
-
-// void slith::setPoints(const multipoint_t &value) { _points = value; }
-
 slith::slith() : _points{{0, 0}}, head_position(0, 0) {}
 
 point_t slith::headpos() const { return head_position; }

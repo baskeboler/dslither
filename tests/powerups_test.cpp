@@ -8,10 +8,10 @@
 #include <boost/geometry/geometries/point.hpp>
 #include <boost/geometry/io/io.hpp>
 
-#include "../point_indexer.h"
+#include "point_indexer.h"
 
-#include "../powerup.h"
-#include "../powerup_manager.h"
+#include "powerup.h"
+#include "powerup_manager.h"
 
 using namespace slither;
 

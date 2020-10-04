@@ -21,7 +21,6 @@ namespace geoi = geo::index;
 typedef geo::model::point<int, 2, geo::cs::cartesian> point_t;
 typedef geo::model::box<point_t> box_t;
 typedef geo::model::segment<point_t> segment_t;
-// typedef geo::model::multi_point<point_t> multipoint_t;
 typedef geo::model::linestring<point_t> linestring_t;
 
 typedef std::pair<box_t, int> geo_box_index_value_t;
@@ -54,17 +53,6 @@ typedef geoindexer<box_t> box_indexer;
 typedef geoindexer<segment_t> segment_indexer;
 typedef geoindexer<point_t> point_indexer;
 typedef geoindexer<linestring_t> linestring_indexer;
-// typedef geoindexer<multipoint_t> multipoint_indexer;
 
-// class point_indexer {
-//  int next_idx = 0;
-//  geoi::rtree<geo_point_index_value_t, geoi::rstar<16>> idx;
-
-// public:
-//  geo_point_index_value_t add_point(point_t p);
-
-//  vector<geo_point_index_value_t> intersects(box_t box);
-//};
 extern std::ostream &operator<<(std::ostream &os, const point_t &p);
-// extern std::ostream &operator<<(std::ostream &os, const multipoint_t &p);
 #endif // POINT_INDEXER_H

@@ -25,14 +25,29 @@ include(${Catch2_SOURCE_DIR}/contrib/ParseAndAddCatchTests.cmake)
 
 #find_package(Catch2 REQUIRED)
 #INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
-set(dslither_SRC slith.cpp slith_node.cpp point_indexer.cpp powerup.cpp powerup_manager.cpp
-    gamestate.cpp player.cpp color.cpp)
-set(dslither_HEADERS slith.h slith_node.h point_indexer.h powerup.h powerup_manager.h
-    gamestate.h player.h color.h)
+set(dslither_SRC 
+    src/slith.cpp 
+    src/slith_node.cpp 
+    src/point_indexer.cpp 
+    src/powerup.cpp 
+    src/powerup_manager.cpp
+    src/gamestate.cpp 
+    src/player.cpp 
+    src/color.cpp)
+set(dslither_HEADERS 
+    src/slith.h 
+    src/slith_node.h 
+    src/point_indexer.h 
+    src/powerup.h 
+    src/powerup_manager.h
+    src/gamestate.h 
+    src/player.h 
+    src/color.h)
+
 add_library(dslith ${dslither_SRC} ${dslither_HEADERS} )
 target_link_libraries(dslith Threads::Threads ${Boost_LIBRARIES})
 
-add_executable(dslither main.cpp ${dslither_HEADERS})
+add_executable(dslither src/main.cpp ${dslither_HEADERS})
 target_link_libraries(dslither ${Boost_LIBRARIES} Threads::Threads dslith)
 
 #add_subdirectory(tests) 
@@ -46,6 +61,8 @@ set(dslither_test_SRC
     tests/slith_tests.cpp
     tests/powerups_test.cpp
     tests/color_tests.cpp)
+
+include_directories(src)
 add_executable(dslither_tests tests/tests.cpp ${dslither_test_SRC} ${dslither_HEADERS})
 target_link_libraries(dslither_tests Catch2::Catch2 ${Boost_LIBRARIES} dslith Threads::Threads)
 

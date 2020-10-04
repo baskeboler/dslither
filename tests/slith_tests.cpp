@@ -14,10 +14,10 @@
 
 #include <boost/tuple/tuple.hpp>
 
-#include "../player.h"
-#include "../point_indexer.h"
-#include "../slith.h"
-#include "../slith_node.h"
+#include "player.h"
+#include "point_indexer.h"
+#include "slith.h"
+#include "slith_node.h"
 
 using namespace slither;
 
