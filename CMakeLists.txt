@@ -21,7 +21,7 @@ FetchContent_MakeAvailable(Catch2)
 
 #include(${Catch2_SOURCE_DIR})
 include(${Catch2_SOURCE_DIR}/contrib/Catch.cmake)
-include(${Catch2_SOURCE_DIR}/contrib/ParseAndAddCatchTests.cmake)
+#include(${Catch2_SOURCE_DIR}/contrib/CatchAddTest.cmake)
 
 #find_package(Catch2 REQUIRED)
 #INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
@@ -66,5 +66,6 @@ include_directories(src)
 add_executable(dslither_tests tests/tests.cpp ${dslither_test_SRC} ${dslither_HEADERS})
 target_link_libraries(dslither_tests Catch2::Catch2 ${Boost_LIBRARIES} dslith Threads::Threads)
 
-include(CTest)
-ParseAndAddCatchTests(dslither_tests) 
+#include(CTest)
+#ParseAndAddCatchTests(dslither_tests) 
+catch_discover_tests(dslither_tests REPORTER sonarqube OUTPUT_DIR reports)

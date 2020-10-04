@@ -21,7 +21,8 @@ void slith::move(std::pair<int, int> d) { move(d.first, d.second); }
 void slith::move(int dx, int dy) {
   point_t newhead{head_position.get<0>() + dx, head_position.get<1>() + dy};
   segment_t newsegment{newhead, head_position};
-  geo_segment_index_value_t indexedsegment = segment_idx.add(newsegment);
+  geo_segment_index_value_t indexedsegment =
+      segment_idx.add(std::move(newsegment));
   _points.insert(_points.begin(), newhead);
   segments.push_front(indexedsegment);
   head_position = newhead;

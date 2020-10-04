@@ -6,11 +6,18 @@ namespace slither {
 using boost::uuids::uuid;
 class gamestate {
   //    std::pair
-  int width, height;
   uuid id;
+  unsigned int width;
+  unsigned int height;
 
 public:
-  gamestate();
+  gamestate(const uuid &id, const unsigned int &w, const unsigned int &h);
+  gamestate(const unsigned int &w, const unsigned int &h);
+  uuid getId() const;
+  unsigned int getWidth() const;
+  void setWidth(unsigned int value);
+  unsigned int getHeight() const;
+  void setHeight(unsigned int value);
 };
 } // namespace slither
 

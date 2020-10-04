@@ -19,6 +19,7 @@ public:
   player();
 
   point_t headPosition() const { return _slith->headpos(); }
+
   boost::uuids::uuid id() const;
   void setId(const boost::uuids::uuid &id);
   std::string name() const;
