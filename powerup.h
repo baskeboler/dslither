@@ -24,8 +24,8 @@ template <typename WeightType, typename ColorType> class powerup {
 public:
   powerup() = default;
   powerup(const powerup<WeightType, ColorType> &other) = default;
-  powerup(powerup<WeightType, ColorType> &&other) = default;
-  powerup &operator=(powerup &&other) {
+  powerup(powerup<WeightType, ColorType> &&other) noexcept = default;
+  powerup &operator=(powerup &&other) noexcept {
     weight = std::move(other.weight);
     color = std::move(other.color);
     position = std::move(other.position);

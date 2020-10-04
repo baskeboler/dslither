@@ -1,4 +1,5 @@
 #include "./powerup_manager.h"
+#include <random>
 #include <utility>
 #include <vector>
 
@@ -6,14 +7,18 @@ namespace slither {
 using std::vector;
 
 int powerup_manager::boundedrand(int bound) const {
-  return std::rand() % bound;
+  std::random_device rd;
+  std::mt19937 gen{rd()};
+  std::uniform_int_distribution<> dis(0, bound);
+  return dis(gen);
 }
 
-powerup_manager::powerup_manager() : w{500}, h{500} {}
+powerup_manager::powerup_manager(const uint64_t &width, const uint64_t &height)
+    : w{width}, h{height} {}
 
 vector<powerup_t> powerup_manager::all() {
   vector<powerup_t> res;
-  for (auto &entry : index.all()) {
+  for (const auto &entry : index.all()) {
     res.push_back(powerup_map.at(entry.second));
   }
   return res;
@@ -22,10 +27,15 @@ vector<powerup_t> powerup_manager::all() {
 powerup_t powerup_manager::byidx(int idx) const { return powerup_map.at(idx); }
 
 int powerup_manager::random_powerup() {
-  auto weight = rand() % 100;
-  auto color = rand() & 0xffffff;
+  std::random_device rd;
+  std::mt19937 gen{rd()};
+  std::uniform_int_distribution<> weight_dis(10, 100);
+  std::uniform_int_distribution<> x_dis(0, w);
+  std::uniform_int_distribution<> y_dis(0, h);
+  auto weight = weight_dis(gen);
+  auto color = color_rgba::random();
   powerup_t p;
-  point_t pnt{boundedrand(w), boundedrand(h)};
+  point_t pnt{x_dis(gen), y_dis(gen)};
   geo_point_index_value_t idxPosition = index.add(pnt);
   p.setColor(color);
   p.setWeight(weight);

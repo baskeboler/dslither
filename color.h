@@ -9,7 +9,7 @@ class color_rgba {
 public:
   color_rgba() = default;
   color_rgba(const color_rgba &other) : value{other.value} {};
-  color_rgba(color_rgba &&other) : value{std::move(other.value)} {}
+  color_rgba(color_rgba &&other) noexcept : value{std::move(other.value)} {}
   color_rgba(const uint32_t &v);
   uint8_t r() const;
   uint8_t g() const;
@@ -31,6 +31,8 @@ public:
   std::string css() const;
 
   friend std::ostream &operator<<(std::ostream &, const color_rgba &);
+
+  static color_rgba random();
 };
 
 std::ostream &operator<<(std::ostream &, const color_rgba &);

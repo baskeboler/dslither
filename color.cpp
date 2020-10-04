@@ -3,6 +3,7 @@
 #include <iostream>
 #include <limits>
 #include <ostream>
+#include <random>
 #include <sstream>
 #include <string>
 #include <utility>
@@ -76,6 +77,13 @@ std::string color_rgba::css() const {
      << std::setw(2) << static_cast<int>(b()) << std::setfill('0')
      << std::setw(2) << static_cast<int>(a());
   return ss.str();
+}
+
+color_rgba color_rgba::random() {
+  std::random_device rd;
+  std::mt19937 gen{rd()};
+  std::uniform_int_distribution<uint32_t> dist{0xff, 0xffffffff};
+  return color_rgba{dist(gen)};
 }
 
 std::ostream &operator<<(std::ostream &os, const color_rgba &c) {

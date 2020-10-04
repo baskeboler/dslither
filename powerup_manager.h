@@ -23,7 +23,7 @@ class powerup_manager {
   int boundedrand(int bound) const;
 
 public:
-  powerup_manager();
+  powerup_manager(const uint64_t &width = 500, const uint64_t &height = 500);
   vector<powerup_t> all();
   powerup_t byidx(int idx) const;
   int random_powerup();
