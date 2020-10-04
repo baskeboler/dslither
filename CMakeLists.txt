@@ -33,6 +33,9 @@ set(dslither_SRC
     src/powerup_manager.cpp
     src/gamestate.cpp 
     src/player.cpp 
+    src/shared_state.cpp
+    src/websocket_session.cpp
+    src/http_session.cpp
     src/color.cpp)
 set(dslither_HEADERS 
     src/slith.h 
@@ -42,6 +45,11 @@ set(dslither_HEADERS
     src/powerup_manager.h
     src/gamestate.h 
     src/player.h 
+    src/beast.h
+    src/net.h
+    src/websocket_session.h
+    src/http_session.h
+    src/shared_state.h
     src/color.h)
 
 add_library(dslith ${dslither_SRC} ${dslither_HEADERS} )
