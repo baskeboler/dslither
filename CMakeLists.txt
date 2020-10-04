@@ -22,7 +22,7 @@ FetchContent_MakeAvailable(Catch2)
 #include(${Catch2_SOURCE_DIR})
 include(${Catch2_SOURCE_DIR}/contrib/Catch.cmake)
 #include(${Catch2_SOURCE_DIR}/contrib/CatchAddTest.cmake)
-
+FILE(COPY index.html DESTINATION "${CMAKE_BINARY_DIR}")
 #find_package(Catch2 REQUIRED)
 #INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
 set(dslither_SRC 
@@ -36,6 +36,8 @@ set(dslither_SRC
     src/shared_state.cpp
     src/websocket_session.cpp
     src/http_session.cpp
+    src/listener.cpp
+    src/urls_large_data.cpp
     src/color.cpp)
 set(dslither_HEADERS 
     src/slith.h 
@@ -45,11 +47,14 @@ set(dslither_HEADERS
     src/powerup_manager.h
     src/gamestate.h 
     src/player.h 
+    src/urls_large_data.h
     src/beast.h
     src/net.h
     src/websocket_session.h
     src/http_session.h
     src/shared_state.h
+    
+    src/listener.h
     src/color.h)
 
 add_library(dslith ${dslither_SRC} ${dslither_HEADERS} )
@@ -57,6 +62,9 @@ target_link_libraries(dslith Threads::Threads ${Boost_LIBRARIES})
 
 add_executable(dslither src/main.cpp ${dslither_HEADERS})
 target_link_libraries(dslither ${Boost_LIBRARIES} Threads::Threads dslith)
+
+add_executable(crawler src/crawler.cpp ${dslither_HEADERS})
+target_link_libraries(crawler ${Boost_LIBRARIES} Threads::Threads dslith)
 
 #add_subdirectory(tests) 
 
