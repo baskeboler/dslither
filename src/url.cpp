@@ -1,3 +1,4 @@
+
 #include "url.h"
 #include <regex>
 #include <sstream>
@@ -46,7 +47,8 @@ std::string url::str() const {
   ss << _host;
   if (_port != 80)
     ss << ":" << _port;
-  ss << _path;
+  if (_path != "/")
+    ss << _path;
   if (!_query_params.empty()) {
     ss << "?";
     bool first = true;
@@ -103,6 +105,8 @@ url url::parse(const std::string &u) {
   path += base_match[4];
   path += base_match[5];
 
+  if (path.empty())
+    path = "/";
   std::string query_str = base_match[6];
   map<string, string> vars;
   if (!query_str.empty()) {

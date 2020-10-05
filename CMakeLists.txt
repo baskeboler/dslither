@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(BOOST_ASIO_DISABLE_NOEXCEPT ON)
 find_package(Boost COMPONENTS system program_options thread fiber log REQUIRED)
 find_package(Threads REQUIRED)
-
+find_package(OpenSSL REQUIRED)
 Include(FetchContent)
 
 FetchContent_Declare(
@@ -37,6 +37,7 @@ set(dslither_SRC
     src/websocket_session.cpp
     src/http_session.cpp
     src/listener.cpp
+    src/http_client.cpp
     src/urls_large_data.cpp
     src/url.cpp
     src/color.cpp)
@@ -48,6 +49,7 @@ set(dslither_HEADERS
     src/powerup_manager.h
     src/gamestate.h 
     src/player.h 
+    src/http_client.h
     src/urls_large_data.h
     src/beast.h
     src/net.h
@@ -59,7 +61,7 @@ set(dslither_HEADERS
     src/color.h)
 
 add_library(dslith ${dslither_SRC} ${dslither_HEADERS} )
-target_link_libraries(dslith Threads::Threads ${Boost_LIBRARIES})
+target_link_libraries(dslith Threads::Threads ${Boost_LIBRARIES} OpenSSL::SSL)
 
 add_executable(dslither src/main.cpp ${dslither_HEADERS})
 target_link_libraries(dslither ${Boost_LIBRARIES} Threads::Threads dslith)
@@ -70,11 +72,7 @@ target_link_libraries(crawler ${Boost_LIBRARIES} Threads::Threads dslith)
 add_executable(asio src/asio.cpp ${dslither_HEADERS})
 target_link_libraries(asio ${Boost_LIBRARIES} Threads::Threads dslith)
 
-
-
-#add_subdirectory(tests) 
-
-enable_testing()
+enable_testing(true)
 
 INCLUDE_DIRECTORIES (${Catch2_INCLUDE_DIRS})
 include_directories(..)
@@ -89,6 +87,4 @@ include_directories(src)
 add_executable(dslither_tests tests/tests.cpp ${dslither_test_SRC} ${dslither_HEADERS})
 target_link_libraries(dslither_tests Catch2::Catch2 ${Boost_LIBRARIES} dslith Threads::Threads)
 
-#include(CTest)
-#ParseAndAddCatchTests(dslither_tests) 
 catch_discover_tests(dslither_tests REPORTER sonarqube OUTPUT_DIR reports)

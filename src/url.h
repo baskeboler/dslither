@@ -23,7 +23,7 @@ class url {
 
 public:
   explicit url(const std::string &host, const protocol_t &p = HTTP,
-               const unsigned int &port = 80, const std::string &path = "",
+               const unsigned int &port = 80, const std::string &path = "/",
                const query_map_t &query = {}, const std::string &anchor = "");
 
   ~url() = default;
