@@ -1,5 +1,8 @@
 #ifndef BEAST_H
 #define BEAST_H
+#ifndef BOOST_ASIO_DISABLE_NOEXCEPT
+#define BOOST_ASIO_DISABLE_NOEXCEPT
+#endif
 
 #include <boost/beast.hpp>
 

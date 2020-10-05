@@ -3,7 +3,9 @@
 // Example: HTTP crawl (asynchronous)
 //
 //------------------------------------------------------------------------------
-
+#ifndef BOOST_ASIO_DISABLE_NOEXCEPT
+#define BOOST_ASIO_DISABLE_NOEXCEPT
+#endif
 #include "urls_large_data.h"
 
 #include <atomic>
@@ -15,6 +17,8 @@
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/version.hpp>
+#include <boost/log/trivial.hpp>
+
 #include <chrono>
 #include <cstdlib>
 #include <functional>
@@ -26,6 +30,8 @@
 #include <thread>
 #include <vector>
 
+#include "net.h"
+
 namespace chrono = std::chrono; // from <chrono>
 namespace beast = boost::beast; // from <boost/beast.hpp>
 namespace http = beast::http;   // from <boost/beast/http.hpp>
@@ -36,27 +42,28 @@ using tcp = net::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
 
 // This structure aggregates statistics on all the sites
 class crawl_report {
+
+public:
   net::io_context &ioc_;
   net::strand<net::io_context::executor_type> strand_;
   std::atomic<std::size_t> index_;
   std::vector<char const *> const &hosts_;
   std::size_t count_ = 0;
-
-public:
-  crawl_report(net::io_context &ioc)
-      : ioc_(ioc), strand_(ioc_.get_executor()), index_(0),
-        hosts_(urls_large_data()) {}
+  explicit crawl_report(net::io_context &ioc)
+      : ioc_{ioc}, strand_{ioc_.get_executor()}, index_{0},
+        hosts_{urls_large_data()} {}
 
   // Run an aggregation function on the strand.
   // This allows synchronization without a mutex.
   template <class F> void aggregate(F const &f) {
-    net::post(strand_, [&, f] {
+    net::post(strand_, [this, f] {
       f(*this);
-      if (count_ % 100 == 0) {
-        std::cerr << "Progress: " << count_ << " of " << hosts_.size() << "\n";
+      if (this->count_ % 100 == 0) {
+        BOOST_LOG_TRIVIAL(info)
+            << "Progress: " << this->count_ << " of " << this->hosts_.size();
         // std::cerr << *this;
       }
-      ++count_;
+      ++this->count_;
     });
   }
 
@@ -276,12 +283,31 @@ int main(int argc, char *argv[]) {
       net::io_context ioc{1};
       std::make_shared<worker>(report, ioc)->run();
       ioc.run();
+
+      // Capture SIGINT and SIGTERM to perform a clean shutdown
+      net::signal_set signals(ioc, SIGINT, SIGTERM);
+      signals.async_wait([&ioc](boost::system::error_code const &, int) {
+        // Stop the io_context. This will cause run()
+        // to return immediately, eventually destroying the
+        // io_context and any remaining handlers in it.
+        BOOST_LOG_TRIVIAL(debug) << "caught signal";
+        ioc.stop();
+      });
     });
 
   // Add another thread to run the main io_context which
   // is used to aggregate the statistics
   workers.emplace_back([&ioc] { ioc.run(); });
 
+  // Capture SIGINT and SIGTERM to perform a clean shutdown
+  net::signal_set signals(ioc, SIGINT, SIGTERM);
+  signals.async_wait([&ioc](boost::system::error_code const &, int) {
+    // Stop the io_context. This will cause run()
+    // to return immediately, eventually destroying the
+    // io_context and any remaining handlers in it.
+    BOOST_LOG_TRIVIAL(debug) << "caught signal";
+    ioc.stop();
+  });
   // Now block until all threads exit
   for (std::size_t i = 0; i < workers.size(); ++i) {
     auto &thread = workers[i];

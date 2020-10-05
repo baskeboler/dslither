@@ -4,7 +4,7 @@ project(dslither LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(BOOST_ASIO_DISABLE_NOEXCEPT ON)
 find_package(Boost COMPONENTS system program_options thread fiber log REQUIRED)
 find_package(Threads REQUIRED)
 
@@ -38,6 +38,7 @@ set(dslither_SRC
     src/http_session.cpp
     src/listener.cpp
     src/urls_large_data.cpp
+    src/url.cpp
     src/color.cpp)
 set(dslither_HEADERS 
     src/slith.h 
@@ -53,7 +54,7 @@ set(dslither_HEADERS
     src/websocket_session.h
     src/http_session.h
     src/shared_state.h
-    
+    src/url.h
     src/listener.h
     src/color.h)
 
@@ -66,6 +67,11 @@ target_link_libraries(dslither ${Boost_LIBRARIES} Threads::Threads dslith)
 add_executable(crawler src/crawler.cpp ${dslither_HEADERS})
 target_link_libraries(crawler ${Boost_LIBRARIES} Threads::Threads dslith)
 
+add_executable(asio src/asio.cpp ${dslither_HEADERS})
+target_link_libraries(asio ${Boost_LIBRARIES} Threads::Threads dslith)
+
+
+
 #add_subdirectory(tests) 
 
 enable_testing()
@@ -76,6 +82,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR true)
 set(dslither_test_SRC 
     tests/slith_tests.cpp
     tests/powerups_test.cpp
+    tests/url_tests.cpp
     tests/color_tests.cpp)
 
 include_directories(src)

@@ -1,6 +1,11 @@
 #include "websocket_session.h"
 #include <iostream>
 
+#include <boost/property_tree/json_parser.hpp>
+#include <boost/property_tree/ptree.hpp>
+
+using boost::property_tree::ptree;
+
 websocket_session::websocket_session(
     tcp::socket &&socket, boost::shared_ptr<shared_state> const &state)
     : ws_(std::move(socket)), state_(state) {}
@@ -35,6 +40,13 @@ void websocket_session::on_read(beast::error_code ec, std::size_t) {
   // Handle the error, if any
   if (ec)
     return fail(ec, "read");
+
+  ptree pt;
+
+  std::stringstream ss;
+  ss << beast::buffers_to_string(buffer_.data());
+
+  boost::property_tree::read_json(ss, pt);
 
   // Send to all connections
   state_->send(beast::buffers_to_string(buffer_.data()));
